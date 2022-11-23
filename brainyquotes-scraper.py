@@ -9,6 +9,7 @@ def scrape(keyword, page):
         response = requests.get(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
         st.text(f'Page {p}')
         soup = BeautifulSoup(response.text,'lxml')
+        st.text(soup.text)
         cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
         for card in cards:
             try:
