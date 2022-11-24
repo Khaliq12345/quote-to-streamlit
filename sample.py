@@ -12,4 +12,6 @@ with sync_playwright() as p:
         stealth_sync(page)
         page.goto('https://www.manta.com/mb_33_C4_000/restaurants_and_bars')
         st.text(page.title())
+        page.goto('https://www.manta.com/c/mms0zjs/lambertville-trading-company')
+        st.text(page.text)
         browser.close()
