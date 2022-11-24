@@ -1,25 +1,16 @@
 import os
 os.system("playwright install")
 
-from cf_clearance import sync_cf_retry, sync_stealth
 from playwright.sync_api import sync_playwright
 import streamlit as st
+from playwright_stealth import stealth_sync
 
 st.title('Starting')
 with sync_playwright() as p:
-    browser = p.chromium.launch()
-    page = browser.new_page()
-    sync_stealth(page, pure=True)
-    page.goto('https://nowsecure.nl')
-    res = sync_cf_retry(page)
-    if res:
-        cookies = page.context.cookies()
-        for cookie in cookies:
-            if cookie.get('name') == 'cf_clearance':
-                cf_clearance_value = cookie.get('value')
-                st.text(cf_clearance_value)
-        ua = page.evaluate('() => {return navigator.userAgent}')
-        st.text(ua)
-    else:
-        st.text("cf challenge fail")
-    browser.close()
+    for browser_type in [p.chromium, p.firefox, p.webkit]:
+        browser = browser_type.launch()
+        page = browser.new_page()
+        stealth_sync(page)
+        page.goto('http://whatsmyuseragent.org/')
+        st.text(page.title())
+        browser.close()
