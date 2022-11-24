@@ -8,6 +8,6 @@ st.title('Starting')
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page()
-    page.goto("http://playwright.dev")
+    page.goto("https://www.manta.com/mb_34_C432C_000/restaurants")
     st.text(page.title())
     browser.close()
