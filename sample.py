@@ -10,6 +10,6 @@ with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
         stealth_sync(page)
-        page.goto('http://manta.com/')
+        page.goto('https://www.whitepages.com/')
         st.text(page.title())
         browser.close()
