@@ -7,7 +7,7 @@ from playwright_stealth import stealth_sync
 st.title('Starting')
 with sync_playwright() as p:
         browser = p.chromium.launch()
-        page = browser.new_page(user_agent = "Mozilla/5.0 (Linux; Android 6.0; HTC One X10 Build/MRA58K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/61.0.3163.98 Mobile Safari/537.36")
+        page = browser.new_page(user_agent = "Mozilla/5.0 (Linux; Android 10; SM-G980F Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/78.0.3904.96 Mobile Safari/537.36")
         stealth_sync(page)
         page.goto('https://www.manta.com/c/mms0zjs/lambertville-trading-company')
         st.text(page.title())
