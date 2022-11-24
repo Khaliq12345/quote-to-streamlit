@@ -7,7 +7,7 @@ from playwright_stealth import stealth_sync
 st.title('Starting')
 with sync_playwright() as p:
         # Can be "msedge", "chrome-beta", "msedge-beta", "msedge-dev", etc.
-        browser = p.launch()
+        browser = p.chromium.launch()
         page = browser.new_page(user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
         stealth_sync(page)
         page.goto('https://www.whitepages.com/business/CA/Manhattan-Beach/Restaurants')
