@@ -10,6 +10,6 @@ with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
         stealth_sync(page)
-        page.goto('http://whatsmyuseragent.org/')
+        page.goto('https://www.brainyquote.com/topics/age-quotes')
         st.text(page.title())
         browser.close()
