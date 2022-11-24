@@ -14,4 +14,8 @@ with sync_playwright() as p:
         st.text(page.title())
         page.screenshot(path="screenshot.png")
         st.image('screenshot.png')
+        page.goto('https://www.whitepages.com/business/LA/New-Orleans/Doctors')
+        st.text(page.title())
+        page.screenshot(path="screenshot.png")
+        st.image('screenshot.png')
         browser.close()
