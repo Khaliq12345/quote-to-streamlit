@@ -8,13 +8,13 @@ from playwright.sync_api import sync_playwright
 import streamlit as st
 from playwright_stealth import stealth_sync
 
-def scrape(keyword, page):
+def scrape(keyword, pages):
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
         stealth_sync(page)
         quote_list = []
-        for p in range(1, int(page)):
+        for p in range(1, int(pages)):
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
             st.text(f'Page {p}')
             page.is_visble('div#pos_1_2', timeout = 60.0)
@@ -53,9 +53,9 @@ if __name__ == '__main__':
     st.text("3. Do not use apostrophe (') instead just add it to the keyword [(Valentine's day ==> valentines-day), (New Year's) ==> (new-years)")
     with st.form('Scrape'):
         keyword = st.text_input('What topic will you like to scrape')
-        page = st.number_input('Number of pages to scrape (Always add +1 to the number of pages you want)')
+        pages = st.number_input('Number of pages to scrape (Always add +1 to the number of pages you want)')
         search = st.form_submit_button('Scrape')
         if search:
-            scrape(keyword, page)
+            scrape(keyword, pages)
 
 
