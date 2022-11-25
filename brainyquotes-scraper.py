@@ -1,6 +1,7 @@
 import os
 os.system("playwright install")
 import requests
+from time import sleep
 from bs4 import BeautifulSoup
 import pandas as pd
 from playwright.sync_api import sync_playwright
@@ -14,6 +15,7 @@ def scrape(keyword, pages):
         stealth_sync(page)
         quote_list = []
         for p in range(1, int(pages)):
+            sleep(2)
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
             st.text(f'Page {p}')
             page.is_visible('div#pos_1_2', timeout = 60.0)
