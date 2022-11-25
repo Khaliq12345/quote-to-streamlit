@@ -18,29 +18,32 @@ def scrape(keyword, pages):
             stealth_sync(page)
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
             st.text(f'Page {p}')
-            page.is_visible('div#pos_1_2', timeout = 60.0)
-            html = page.inner_html("div#quotesList")
-            page.close()
-            soup = BeautifulSoup(html,'lxml')
-            cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
-            for card in cards:
-                try:
-                    #name
-                    name = card.find('a',{'title':'view author'}).text
-                except:
-                    name = 'N/A'
+            try:
+                page.is_visible('div#pos_1_2', timeout = 60.0)
+                html = page.inner_html("div#quotesList")
+                page.close()
+                soup = BeautifulSoup(html,'lxml')
+                cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
+                for card in cards:
+                    try:
+                        #name
+                        name = card.find('a',{'title':'view author'}).text
+                    except:
+                        name = 'N/A'
 
-                try:
-                    #quote
-                    quote = card.find('a',{'title':'view quote'}).text.strip()
-                except:
-                    quote = 'N/A'
+                    try:
+                        #quote
+                        quote = card.find('a',{'title':'view quote'}).text.strip()
+                    except:
+                        quote = 'N/A'
 
-                quotes = {
-                'Author': name,
-                'Quote': quote
-                }
-                quote_list.append(quotes)
+                    quotes = {
+                    'Author': name,
+                    'Quote': quote
+                    }
+                    quote_list.append(quotes)
+                except:
+                    pass
 
         df = pd.DataFrame(quote_list)
         return st.dataframe(df)
