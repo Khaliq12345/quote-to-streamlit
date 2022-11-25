@@ -51,7 +51,7 @@ def scrape(keyword, pages):
         st.download_button(
             "Press to Download",
             csv,
-            f"{keyword}-data.csv",
+            f"{keyword}-quote-data.csv",
             "text/csv",
             key='download-csv'
         )
