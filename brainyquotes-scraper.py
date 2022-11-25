@@ -11,7 +11,7 @@ ua = UserAgent()
 
 def scrape(keyword, pages):
     with sync_playwright() as p:
-        browser = p.chromium.launch(proxy={"server": "per-context"})
+        browser = p.chromium.launch()
         quote_list = []
         for p in range(1, int(pages)):
             page = browser.new_page(user_agent = ua.random)
