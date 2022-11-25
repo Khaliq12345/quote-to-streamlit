@@ -1,6 +1,5 @@
 import os
 os.system("playwright install")
-from time import sleep
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -39,7 +38,6 @@ def scrape(keyword, pages):
                 'Quote': quote
                 }
                 quote_list.append(quotes)
-                sleep(2)
 
         df = pd.DataFrame(quote_list)
         return st.dataframe(df)
