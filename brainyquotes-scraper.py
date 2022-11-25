@@ -47,12 +47,12 @@ def scrape(keyword, pages):
 
         df = pd.DataFrame(quote_list)
         st.dataframe(df)
-        csv = df.to_csv(index=False).encode('utf-8')
+        csv = df.to_csv('data.csv', index=False).encode('utf-8')
         
     browser.close()
     st.download_button(
         "Press to Download",
-        csv,
+        data.csv,
         f"{keyword}-quote-data.csv",
         "text/csv",
         key='download-csv'
