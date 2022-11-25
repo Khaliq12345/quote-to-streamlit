@@ -17,7 +17,7 @@ def scrape(keyword, pages):
         for p in range(1, int(pages)):
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
             st.text(f'Page {p}')
-            page.is_visble('div#pos_1_2', timeout = 60.0)
+            page.is_visible('div#pos_1_2', timeout = 60.0)
             html = page.inner_html("div#quotesList")
             soup = BeautifulSoup(html,'lxml')
             st.text(soup.text)
