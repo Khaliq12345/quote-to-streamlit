@@ -20,7 +20,6 @@ def scrape(keyword, pages):
             page.is_visible('div#pos_1_2', timeout = 60.0)
             html = page.inner_html("div#quotesList")
             soup = BeautifulSoup(html,'lxml')
-            st.text(soup.text)
             cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
             for card in cards:
                 try:
