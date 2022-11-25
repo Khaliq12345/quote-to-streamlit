@@ -7,19 +7,22 @@ import pandas as pd
 from playwright.sync_api import sync_playwright
 import streamlit as st
 from playwright_stealth import stealth_sync
+from fake_useragent import UserAgent
+ua = UserAgent()
 
 def scrape(keyword, pages):
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        page = browser.new_page(user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
-        stealth_sync(page)
         quote_list = []
         for p in range(1, int(pages)):
             sleep(2)
+            page = browser.new_page(user_agent = ua.random)
+            stealth_sync(page)
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
             st.text(f'Page {p}')
             page.is_visible('div#pos_1_2', timeout = 60.0)
             html = page.inner_html("div#quotesList")
+            page.close()
             soup = BeautifulSoup(html,'lxml')
             cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
             for card in cards:
