@@ -43,6 +43,7 @@ def scrape(keyword, pages):
                     }
                     quote_list.append(quotes)
             except:
+                page.close()
                 pass
 
         df = pd.DataFrame(quote_list)
