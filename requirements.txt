@@ -5,3 +5,4 @@ requests==2.23.0
 lxml==4.9.1
 playwright
 playwright-stealth
+time
