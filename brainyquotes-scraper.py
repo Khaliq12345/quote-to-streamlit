@@ -47,6 +47,15 @@ def scrape(keyword, pages):
 
         df = pd.DataFrame(quote_list)
         return st.dataframe(df)
+        
+        csv = df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+        "Press to Download",
+        csv,
+        f"{category}-data.csv",
+        "text/csv",
+        key='download-csv'
+        )
     browser.close()
 
 if __name__ == '__main__':
@@ -59,7 +68,7 @@ if __name__ == '__main__':
         keyword = st.text_input('What topic will you like to scrape')
         pages = st.number_input('Number of pages to scrape (Always add +1 to the number of pages you want)')
         search = st.form_submit_button('Scrape')
-        if search:
-            scrape(keyword, pages)
+    if search:
+        scrape(keyword, pages)
 
 
