@@ -47,16 +47,8 @@ def scrape(keyword, pages):
 
         df = pd.DataFrame(quote_list)
         st.dataframe(df)
-        csv = df.to_csv('data.csv', index=False)
         
-    browser.close()
-    st.download_button(
-        "Press to Download",
-        data.csv,
-        f"{keyword}-quote-data.csv",
-        "text/csv",
-        key='download-csv'
-    )
+        browser.close()
 
 if __name__ == '__main__':
     st.title('brainyquote.com Scraper')
