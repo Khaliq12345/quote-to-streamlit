@@ -6,30 +6,15 @@ import pandas as pd
 from playwright.sync_api import sync_playwright
 import streamlit as st
 from playwright_stealth import stealth_sync
-from fp.fp import FreeProxy
 from fake_useragent import UserAgent
 ua = UserAgent()
-
-class Spoofer(object):
-    def __init__(self, country_id=['US'], rand=True, anonym=True):
-        self.country_id = country_id
-        self.rand = rand
-        self.anonym = anonym
-        self.userAgent, self.ip = self.get()
-
-    def get(self):
-        ua = UserAgent()
-        proxy = FreeProxy(country_id=self.country_id, rand=self.rand, anonym=self.anonym).get()
-        ip = proxy.split("://")[1]
-        return ua.random, ip
 
 def scrape(keyword, pages):
     with sync_playwright() as p:
         browser = p.chromium.launch(proxy={"server": "per-context"})
         quote_list = []
         for p in range(1, int(pages)):
-            helperSpoofer = Spoofer()
-            page = browser.new_page(user_agent = helperSpoofer.userAgent, proxy={"server": f"http://{helperSpoofer.ip}"})
+            page = browser.new_page(user_agent = ua.random)
             stealth_sync(page)
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
             st.text(f'Page {p}')
@@ -67,7 +52,7 @@ def scrape(keyword, pages):
         st.download_button(
         "Press to Download",
         csv,
-        f"{category}-data.csv",
+        f"{keyword}-quote-data.csv",
         "text/csv",
         key='download-csv'
         )
