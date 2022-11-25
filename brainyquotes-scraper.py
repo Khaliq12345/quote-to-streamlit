@@ -42,8 +42,8 @@ def scrape(keyword, pages):
                     'Quote': quote
                     }
                     quote_list.append(quotes)
-                except:
-                    pass
+            except:
+                pass
 
         df = pd.DataFrame(quote_list)
         return st.dataframe(df)
