@@ -18,7 +18,7 @@ def scrape(keyword, pages):
         col1, col2 = st.columns(2)
         progress = col1.metric('Pages Scraped', 0)
         for p in range(1, int(pages)):
-            page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
+            page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}', wait_until = 'commit')
             progress.metric('Pages Scraped', p)
             try:
                 page.wait_for_selector('div#pos_1_2')
