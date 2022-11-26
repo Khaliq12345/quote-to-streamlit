@@ -19,7 +19,7 @@ def scrape(keyword, pages):
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
             st.text(f'Page {p}')
             try:
-                page.is_visible('div#pos_1_2')
+                page.wait_for_selector('div#pos_1_2')
                 html = page.inner_html("div#quotesList")
                 soup = BeautifulSoup(html,'lxml')
                 cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
