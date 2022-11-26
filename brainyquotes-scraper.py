@@ -14,30 +14,27 @@ def scrape(keyword, pages):
         headers = {'User-Agent': ua.random }
         response = requests.get(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}', headers = headers)
         progress.metric('Pages Scraped', p)
-        try:
-            soup = BeautifulSoup(response,'html.parser')
-            st.text(soup.text)
-            cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
-            for card in cards:
-                try:
-                    #name
-                    name = card.find('a',{'title':'view author'}).text
-                except:
-                    name = 'N/A'
+        soup = BeautifulSoup(response,'html.parser')
+        st.text(soup.text)
+        cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
+        for card in cards:
+            try:
+                #name
+                name = card.find('a',{'title':'view author'}).text
+            except:
+                name = 'N/A'
 
-                try:
-                    #quote
-                    quote = card.find('a',{'title':'view quote'}).text.strip()
-                except:
-                    quote = 'N/A'
+            try:
+                #quote
+                quote = card.find('a',{'title':'view quote'}).text.strip()
+            except:
+                quote = 'N/A'
 
-                quotes = {
-                'Author': name,
-                'Quote': quote
-                }
-                quote_list.append(quotes)
-        except:
-            pass
+            quotes = {
+            'Author': name,
+            'Quote': quote
+            }
+            quote_list.append(quotes)
 
     df = pd.DataFrame(quote_list)
     with st.spinner("Loading..."):
