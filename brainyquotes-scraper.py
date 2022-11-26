@@ -15,7 +15,7 @@ def scrape(keyword, pages):
         response = requests.get(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}', headers = headers)
         progress.metric('Pages Scraped', p)
         try:
-            soup = BeautifulSoup(response,'lxml')
+            soup = BeautifulSoup(response,'html.parser')
             cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
             for card in cards:
                 try:
