@@ -60,8 +60,8 @@ def scrape(keyword, pages):
         browser.close()
 
 if __name__ == '__main__':
-    st.title('brainyquote.com Scraper')
-    st.markdown('<h2> Instruction on how to input the topic <h2/>', unsafe_allow_html=True)
+    st.title('BRAINYQUOTE.COM SCRAPER')
+    st.markdown('<h2> Instruction on how to input the topics <h2/>', unsafe_allow_html=True)
     st.text('1. (Experience ==> experience)')
     st.text('2. (Mothers day ==> mothers-day)')
     st.text("3. (Valentine's day ==> valentines-day)")
@@ -71,5 +71,7 @@ if __name__ == '__main__':
         search = st.form_submit_button('Scrape')
     if search:
         scrape(keyword, pages)
+        st.balloons()
+        st.success('Success')
 
 
