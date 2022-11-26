@@ -61,7 +61,7 @@ def scrape(keyword, pages):
 
 if __name__ == '__main__':
     st.title('brainyquote.com Scraper')
-    st.markdown('<h2>Instruction on how to input the topic<h2/>')
+    st.markdown('<h2> Instruction on how to input the topic <h2/>')
     st.text('1. (Experience ==> experience)')
     st.text('2. (Mothers day ==> mothers-day)')
     st.text("3. (Valentine's day ==> valentines-day)")
