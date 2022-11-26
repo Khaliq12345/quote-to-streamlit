@@ -1,6 +1,7 @@
 import os
 os.system("playwright install")
 import requests
+from time import sleep
 from bs4 import BeautifulSoup
 import pandas as pd
 from playwright.sync_api import sync_playwright
@@ -14,9 +15,11 @@ def scrape(keyword, pages):
         browser = p.chromium.launch()
         page = browser.new_page(user_agent = ua.random)
         quote_list = []
+        col1, col2 = st.columns(2)
+        progress = col1.metric('Pages Scraped', 0)
         for p in range(1, int(pages)):
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
-            st.text(f'Page {p}')
+            progress.metric('Pages Scraped', p)
             try:
                 page.wait_for_selector('div#pos_1_2')
                 html = page.inner_html("div#quotesList")
@@ -44,6 +47,10 @@ def scrape(keyword, pages):
                 pass
 
         df = pd.DataFrame(quote_list)
+        with st.spinner("Loading..."):
+            sleep(5)
+            
+        col2.metric('Total data scraped', value = len(df))
         st.dataframe(df)
         csv = df.to_csv(index=False).encode('utf-8')
         st.download_button(
