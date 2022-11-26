@@ -12,7 +12,7 @@ def scrape(keyword, pages):
     progress = col1.metric('Pages Scraped', 0)
     for p in range(1, int(pages)):
         headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56"}
-        response = requests.get(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}', headers = headers)
+        response = requests.get(f'https://quotes.toscrape.com/', headers = headers)
         progress.metric('Pages Scraped', p)
         soup = BeautifulSoup(response.text,'html.parser')
         st.text(soup.text)
