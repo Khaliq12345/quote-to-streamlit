@@ -11,7 +11,7 @@ def scrape(keyword, pages):
     col1, col2 = st.columns(2)
     progress = col1.metric('Pages Scraped', 0)
     for p in range(1, int(pages)):
-        headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56"}
+        headers = {'User-Agent': ua.random}
         response = requests.get(f'https://quotes.toscrape.com/tag/{keyword}/page/{p}/', headers = headers)
         progress.metric('Pages Scraped', p)
         soup = BeautifulSoup(response.text,'lxml')
@@ -51,10 +51,13 @@ def scrape(keyword, pages):
     )
 
 if __name__ == '__main__':
-    st.title('BRAINYQUOTE.COM SCRAPER')
+    st.title('QUOTETOSCRAPE.COM SCRAPER')
     st.caption('Fields to be scraped are: Author name and quote')
     with st.form('Scrape'):
-        keyword = st.text_input('What topic will you like to scrape')
+        keyword = st.selectbox(
+        'What tags would you like to scrape?',
+         ('love', 'inspirational', 'life', 'humor', 'books', 'reading', 'friendship', 'friends', 'truth')
+        )
         pages = st.number_input('Number of pages to scrape (Always add +1 to the number of pages you want)')
         search = st.form_submit_button('Scrape')
     if search:
