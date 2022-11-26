@@ -16,6 +16,7 @@ def scrape(keyword, pages):
         progress.metric('Pages Scraped', p)
         try:
             soup = BeautifulSoup(response,'html.parser')
+            st.text(soup.text)
             cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
             for card in cards:
                 try:
