@@ -61,10 +61,10 @@ def scrape(keyword, pages):
 
 if __name__ == '__main__':
     st.title('brainyquote.com Scraper')
-    st.text('Instruction on how to input the topic')
-    st.text('1. The topic needs to be in lower case (age, experience)')
-    st.text('2. Use hypen instead of space (new-year, mother-day)')
-    st.text("3. Do not use apostrophe (') instead just add it to the keyword [(Valentine's day ==> valentines-day), (New Year's) ==> (new-years)")
+    st.markdown('<h2>Instruction on how to input the topic<h2/>')
+    st.text('1. (Experience ==> experience)')
+    st.text('2. (Mothers day ==> mothers-day)')
+    st.text("3. (Valentine's day ==> valentines-day)")
     with st.form('Scrape'):
         keyword = st.text_input('What topic will you like to scrape')
         pages = st.number_input('Number of pages to scrape (Always add +1 to the number of pages you want)')
