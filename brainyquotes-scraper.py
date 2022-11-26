@@ -12,26 +12,25 @@ def scrape(keyword, pages):
     progress = col1.metric('Pages Scraped', 0)
     for p in range(1, int(pages)):
         headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56"}
-        response = requests.get(f'https://quotes.toscrape.com/', headers = headers)
+        response = requests.get(f'https://quotes.toscrape.com/tag/{keyword}/page/{p}/', headers = headers)
         progress.metric('Pages Scraped', p)
-        soup = BeautifulSoup(response.text,'html.parser')
-        st.text(soup.text)
-        cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
+        soup = BeautifulSoup(response.text,'lxml')
+        cards = soup.select('.quote')
         for card in cards:
             try:
                 #name
-                name = card.find('a',{'title':'view author'}).text
+                author = card.select_one('.author').text
             except:
-                name = 'N/A'
+                name = None
 
             try:
                 #quote
-                quote = card.find('a',{'title':'view quote'}).text.strip()
+                quote = card.select_one('.text').text
             except:
-                quote = 'N/A'
+                quote = None
 
             quotes = {
-            'Author': name,
+            'Author': author,
             'Quote': quote
             }
             quote_list.append(quotes)
@@ -53,10 +52,6 @@ def scrape(keyword, pages):
 
 if __name__ == '__main__':
     st.title('BRAINYQUOTE.COM SCRAPER')
-    st.markdown('<h2> Instruction on how to input the topics <h2/>', unsafe_allow_html=True)
-    st.text('1. (Experience ==> experience)')
-    st.text('2. (Mothers day ==> mothers-day)')
-    st.text("3. (Valentine's day ==> valentines-day)")
     st.caption('Fields to be scraped are: Author name and quote')
     with st.form('Scrape'):
         keyword = st.text_input('What topic will you like to scrape')
