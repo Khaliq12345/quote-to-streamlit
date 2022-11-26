@@ -1,73 +1,56 @@
-import os
-os.system("playwright install")
 import requests
 from time import sleep
 from bs4 import BeautifulSoup
 import pandas as pd
-from playwright.sync_api import sync_playwright
-import streamlit as st
-from playwright_stealth import stealth_sync
 from fake_useragent import UserAgent
 ua = UserAgent()
 
 def scrape(keyword, pages):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page(user_agent = ua.random)
-        quote_list = []
-        col1, col2 = st.columns(2)
-        progress = col1.metric('Pages Scraped', 0)
-        page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes')
+    quote_list = []
+    col1, col2 = st.columns(2)
+    progress = col1.metric('Pages Scraped', 0)
+    for p in range(1, int(pages)):
+        headers = {'User-Agent': ua.random }
+        response = requests.get(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}', headers = headers)
+        progress.metric('Pages Scraped', p)
         try:
-            page.click('button[mode = primary]')
+            soup = BeautifulSoup(response,'lxml')
+            cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
+            for card in cards:
+                try:
+                    #name
+                    name = card.find('a',{'title':'view author'}).text
+                except:
+                    name = 'N/A'
+
+                try:
+                    #quote
+                    quote = card.find('a',{'title':'view quote'}).text.strip()
+                except:
+                    quote = 'N/A'
+
+                quotes = {
+                'Author': name,
+                'Quote': quote
+                }
+                quote_list.append(quotes)
         except:
             pass
-        
-        for p in range(1, int(pages)):
-            page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
-            progress.metric('Pages Scraped', p)
-            try:
-                page.wait_for_selector('div#pos_1_2')
-                html = page.inner_html("div#quotesList")
-                soup = BeautifulSoup(html,'lxml')
-                cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
-                for card in cards:
-                    try:
-                        #name
-                        name = card.find('a',{'title':'view author'}).text
-                    except:
-                        name = 'N/A'
 
-                    try:
-                        #quote
-                        quote = card.find('a',{'title':'view quote'}).text.strip()
-                    except:
-                        quote = 'N/A'
+    df = pd.DataFrame(quote_list)
+    with st.spinner("Loading..."):
+        sleep(5)
 
-                    quotes = {
-                    'Author': name,
-                    'Quote': quote
-                    }
-                    quote_list.append(quotes)
-            except:
-                pass
-
-        df = pd.DataFrame(quote_list)
-        with st.spinner("Loading..."):
-            sleep(5)
-            
-        col2.metric('Total data scraped', value = len(df))
-        st.dataframe(df)
-        csv = df.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            "Press to Download",
-            csv,
-            f"{keyword}-quote-data.csv",
-            "text/csv",
-            key='download-csv'
-        )
-        
-        browser.close()
+    col2.metric('Total data scraped', value = len(df))
+    st.dataframe(df)
+    csv = df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        "Press to Download",
+        csv,
+        f"{keyword}-quote-data.csv",
+        "text/csv",
+        key='download-csv'
+    )
 
 if __name__ == '__main__':
     st.title('BRAINYQUOTE.COM SCRAPER')
