@@ -19,9 +19,8 @@ def scrape(keyword, pages):
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
             st.text(f'Page {p}')
             try:
-                page.is_visible('div#pos_1_2', timeout = 60.0)
+                page.is_visible('div#pos_1_2')
                 html = page.inner_html("div#quotesList")
-                page.close()
                 soup = BeautifulSoup(html,'lxml')
                 cards = soup.find_all('div',{'class':'grid-item qb clearfix bqQt'})
                 for card in cards:
@@ -43,7 +42,6 @@ def scrape(keyword, pages):
                     }
                     quote_list.append(quotes)
             except:
-                page.close()
                 pass
 
         df = pd.DataFrame(quote_list)
