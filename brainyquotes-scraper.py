@@ -13,7 +13,6 @@ def scrape(keyword, pages):
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(user_agent = ua.random)
-        stealth_sync(page)
         quote_list = []
         for p in range(1, int(pages)):
             page.goto(f'https://www.brainyquote.com/topics/{keyword}-quotes_{p}')
