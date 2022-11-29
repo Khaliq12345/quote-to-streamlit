@@ -6,6 +6,17 @@ import pandas as pd
 from fake_useragent import UserAgent
 ua = UserAgent()
 
+st.set_page_config(page_title= 'Quotetoscrape.com Scraper', page_icon=":man:")
+hide_menu = """
+<style>
+#MainMenu {
+    visibility:hidden;}
+footer {
+    visibility:hidden;}
+</style>
+"""
+st.markdown(hide_menu, unsafe_allow_html=True)
+
 def scrape(keyword, pages):
     quote_list = []
     col1, col2 = st.columns(2)
